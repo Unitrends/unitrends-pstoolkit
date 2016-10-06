@@ -1,3 +1,9 @@
+<#
+.Synopsis
+   Gets a list of Unitrends Instant Recovery Jobs
+.EXAMPLE
+   
+#>
 function Get-UebIr {
 	param()
 
@@ -19,4 +25,3 @@ function Get-UebIr {
 
 	FormatUebResult $obj $prop
 }
-

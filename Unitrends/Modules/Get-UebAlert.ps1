@@ -1,3 +1,11 @@
+<#
+.Synopsis
+   Gets Alerts from connected Unitrends Appliance
+.DESCRIPTION
+   This cmdlet returns the alerts from the connected Unitrends Appliance. Use "Connect-UebServer" to connect.
+.EXAMPLE
+   Get-UebObject
+#>
 function Get-UebAlert {
 	param()
 

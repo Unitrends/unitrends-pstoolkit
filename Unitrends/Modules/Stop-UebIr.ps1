@@ -1,3 +1,9 @@
+<#
+.Synopsis
+   Stops a Unitrends Instant Recovery Job
+.EXAMPLE
+   
+#>
 function Stop-UebIr {
 	param (
 			[String] $Id
@@ -19,4 +25,3 @@ function Stop-UebIr {
 
 		$response = UebDelete "api/virtual_clients/$Id/?sid=1" $body
 }
-

@@ -1,3 +1,9 @@
+<#
+.Synopsis
+   Starts a Unitrends Instant Recovery Job
+.EXAMPLE
+   
+#>
 function Start-UebIr {
 	[CmdletBinding()]
 	param (
