@@ -18,6 +18,11 @@ Looking for something to work on? The list of [issues](https://github.com/Unitre
 
 1. Open github [issue](https://github.com/Unitrends/unitrends-pstoolkit/issues)
 
+Requirements
+---------------------------------------
+
+1. PowerShell 4.0+
+2. Unitrends UEB/RS 9.0+
 
 Download and getting started
 ---------------------------------------

@@ -1,6 +1,6 @@
 function Update-UebPsToolkit {
 	param()
 
-    C:\Windows\System32\WindowsPowerShell\v1.0\Modules\Unitrends\Install.ps1
+    iwr https://raw.githubusercontent.com/Unitrends/unitrends-pstoolkit/master/Unitrends/Install.ps1 | iex
 
 }
