@@ -35,7 +35,7 @@ If ($TestPath -eq $True)
     
     {
     Write-Host "Importing Unitrends Module..." -ForegroundColor Cyan
-    Import-Module Unitrends
+    Import-Module Unitrends -Force
     Write-Host "Installation Complete and module loaded!" -ForegroundColor Green
     
     ##Cleanup
