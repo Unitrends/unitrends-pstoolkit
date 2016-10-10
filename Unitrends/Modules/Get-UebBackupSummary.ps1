@@ -3,20 +3,58 @@
    Gets Backup Summary list from connected Unitrends Appliance
 .DESCRIPTION
    This cmdlet returns a list of Backup Assets and summarized details from the connected Unitrends Appliance. Use "Connect-UebServer" to connect.
+.PARAMETER DATE
+    Supply either an INT/number for 'days back from today' or a date formatted as MM/DD/YYYY. If no date is supplied the default 7 days of backups will be retrieved.
 .EXAMPLE
    Get-UebBackupSummary
 .EXAMPLE
    Get-UebBackupSummary | Where-Object {$_.type -match "Physical Server"} #Filters list to Physical Servers
+.EXAMPLE
+   Get-UebBackupSummary -date 20  # Gets Backups going back 20 Days
 #>
 function Get-UebBackupSummary {
 	[CmdletBinding()]
 	param(
-        [string]$rpo = 24
+        [string]$rpo = 24,
+        [string]$date
 	)
 
 	CheckConnection
-	
-	$response = UebGet("api/catalog")
+    
+    # Handle Date Parameter
+    if ($date -ne $null){
+        # Handle 10/07/2016 Style Dates
+        if (([regex]"/").match($date).Success){
+            Try
+            {
+                $StartDate = Get-Date $date -format MM/dd/yyyy
+            }
+            Catch
+            [System.Management.Automation.ParameterBindingException]
+            {
+                Write-Output "Invalid date, please check and try again."
+            }
+        }
+        # Handle "Days Ago" Style dates
+        ElseIF(([regex]"\D").match($date).Success -eq $false)
+        {
+            $StartDate = (Get-Date).AddDays(-$date).ToString("MM/dd/yyyy")
+        }
+        Else
+        {
+            Write-Output "Date is invalid, ignoring"
+            $date = $null
+        }
+    }	
+    
+    # Build 
+    $apiPath = "api/catalog"
+    if ($date -ne $null){
+        $apiPath += ("/?start_date=" + $StartDate)
+    }
+    
+    
+	$response = UebGet($apiPath)
 	$instances = $response.catalog.instances
 	
 	[array]$vmlist = $null
@@ -54,7 +92,7 @@ function Get-UebBackupSummary {
 	}
 
 	$obj = $vmlist
-	$prop = @('VM','RPO_Compliance','RPA','Backups')
+	$prop = @('Asset','RPO_Compliance','RPA','Backups')
 
 	FormatUebResult $obj $prop
 }
