@@ -20,7 +20,7 @@
 #>
 function Start-UebRestoreJob{
 param(
-    [Parameter(Mandatory=$true,ValueFromPipelineByPropertyName=$true)]
+    [Parameter(Mandatory=$false,ValueFromPipelineByPropertyName=$true)]
     [int]$sid = 1,
     [Parameter(Mandatory=$true,ValueFromPipelineByPropertyName=$true)]
     [int]$backupID,
@@ -64,7 +64,7 @@ $body = @{
 #endregion RestoreObject
 
 
-UebPost("/api/restore/full/?sid=$sid",$body)
+UebPost "/api/restore/full/?sid=$sid" $body
 
 
 

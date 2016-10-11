@@ -2,14 +2,14 @@ function Get-UebBackup {
 	[CmdletBinding()]
 	param(
 		[Parameter(Mandatory=$false,ValueFromPipeline=$true)]
-		$VM
+		$Asset
 	)
 
 	CheckConnection
 	
-	$inst = $VM
-	if($VM -is [String]) {
-		$inst =  Get-UebCatalog -Name $VM
+	$inst = $Asset
+	if($Asset -is [String]) {
+		$inst =  Get-UebCatalog -Name $Asset
 	}
 
 	$obj = $inst.backups
