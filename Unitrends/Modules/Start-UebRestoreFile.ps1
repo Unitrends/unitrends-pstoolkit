@@ -15,6 +15,8 @@
     List of file paths to include into the restore
 .PARAMETER Excludes
     List of file paths to exclude from the restore
+.PARAMETER Flat
+    Sets the job to restore without folder structure. Defaults to False. 
 .EXAMPLE
     Start-UebRestoreJob -backupID 11017 -clientID 35 -includes "c:/users/Administrator/" -directory "c:/recover"
 #>
@@ -27,7 +29,8 @@ param(
     [int]$clientID,
     [string]$directory,
     [string[]]$includes,
-    [string[]]$excludes
+    [string[]]$excludes,
+    [switch]$flat = $false
 )
 # Verb Options?   Start- Submit-
 
@@ -38,26 +41,26 @@ param(
 # Build the Restore Object, make $target, $theseIncludes, $theseExcludes, then make $body out of all and more
 # Build Target
 $target = @{
-    flat = $true
-    non_destructive = $true
-    newer = $true
-    today = $false
-    unix = $true
-    directory = $directory
+    flat = $flat #Required
+    non_destructive = $true #Required
+    newer = $true #Required
+    today = $false #Required
+    unix = $true #Required
+    directory = $directory #Optional, but including with blank works as not existing
 }
 
 #Build Include(s) and Exclude(s)
-[array]$theseIncludes = $includes
-[array]$theseExcludes = $excludes
+[array]$theseIncludes = $includes #Required, but may be empty
+[array]$theseExcludes = $excludes #Required, but may be empty
 
 #Build Body
 $body = @{
-    backup_id = $backupID
-    client_id = $clientID
-    target = $target
-    before_cmd = ""
-    after_cmd = ""
-    synthesis = $true
+    backup_id = $backupID #Required
+    client_id = $clientID #Required
+    target = $target #Optional
+    before_cmd = "" #Required, but may be empty
+    after_cmd = "" #Required, but may be empty
+    synthesis = $true #Required if synthesized files ?
     includes = $theseIncludes
     excludes = $theseExcludes
 }
