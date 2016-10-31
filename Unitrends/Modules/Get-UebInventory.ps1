@@ -30,7 +30,11 @@ function Get-UebInventory {
 				$subnode |Add-Member -MemberType NoteProperty -Name "server" -Value $node.name
 				$vms += $subnode
 			}		
-		}
+		} elseif($node.type -eq "Linux") #Linux
+		{
+			$node |Add-Member -MemberType NoteProperty -Name "server" -Value $node.name
+			$vms += $node
+        }
 	}
 	
 	if($Name) {
