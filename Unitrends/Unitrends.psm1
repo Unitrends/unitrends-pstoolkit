@@ -5,7 +5,7 @@ Get-ChildItem $psscriptroot\Modules\*.ps1 | % {
 
 	# ignore certs for https
 	add-type @"
-Get	    using System.Net;
+	    using System.Net;
 	    using System.Security.Cryptography.X509Certificates;
 	    public class TrustAllCertsPolicy : ICertificatePolicy {
 	        public bool CheckValidationResult(
