@@ -32,7 +32,8 @@ function Write-Log {
     )
 
     $date = (Get-Date -f g)
-    $log = $restore_path + "logs/" + $instance
+	# Modified by BJT.
+    $log = $restore_path + "logs/" + $instance + ".log"
     if($Init) {
         if (Test-Path $log)
         {
@@ -155,10 +156,21 @@ function Restore {
     Import-Module Unitrends
     Connect-UebServer -Server $ueb -User $user -Password $pass | Out-Null
     
-    $catalog = Get-UebCatalog -InstanceId $instance
+	# Modified by BJT.
+	$catalog = ""
+	if ($ueb_name)
+	{
+		$catalog = Get-UebCatalog -InstanceId $instance | Where-Object -Property system_name -eq $ueb_name
+	}
+	else
+	{
+		$catalog = Get-UebCatalog -InstanceId $instance
+	}
+    
     $backup_date = [datetime]::Parse($catalog.last_backup_date).ToString("yyyyMMdd_HHmmss")
     $backup_id = $catalog.last_backup_id
-    $vm_name = $replica_name_prefix + "_" + $catalog.asset_id + "_" + $catalog.asset + "_" + $backup_date
+	# Modified by BJT.
+    $vm_name = $replica_name_prefix + "_" + $catalog.asset + "_" + $catalog.asset_id + "_" + $backup_date
     $vm_name = $vm_name -replace " ","_"
     $directory = $restore_path + $vm_name
     $directory = $directory -replace " ","_"
@@ -385,8 +397,8 @@ if($InstanceId)
     $instance = $InstanceId
 }
 
-
-$log = $restore_path + "logs/" + $instance
+# Modified by BJT.
+$log = $restore_path + "logs/" + $instance + ".log"
 if(Test-Path $log) {
     if ((Get-Item $log).length -gt 500kb) {
         Remove-Item $log
